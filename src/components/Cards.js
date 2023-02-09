@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useReducer } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { store } from '../store/store';
+import React, { useReducer } from 'react'
+import { useSelector } from 'react-redux'
 import '../App.css';
 import Card from './Card';
-import { AddTask, SaveTask, AddCard, RemoveCard } from '../store/actions/rootAction';
+import { AddTask, SaveTask, AddCard, RemoveCard, RemoveTask, EditTask, EditCardTitle, SaveCardTitle } from '../store/actions/rootAction';
 import rootReducer, { initialState } from '../store/reducers/rootReducer';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 function Cards() {
   let trello = useSelector((state) => state.trello);
@@ -16,7 +13,7 @@ function Cards() {
   console.log("123 ==> ", trello);
 
   function addTask(cardId) {
-      dispatch({...AddTask(), cardId, title: 'Task 3' });
+      dispatch({...AddTask(), cardId });
   }
 
   function saveTask(cardId, input, taskId) {
@@ -31,6 +28,26 @@ function Cards() {
     dispatch({...RemoveCard(), cardId});
   }
 
+  function removeTask(cardId, taskId) {
+    dispatch({...RemoveTask(), cardId, taskId});
+  }
+
+  function editTask(cardId, taskId) {
+    dispatch({...EditTask(), cardId, taskId });
+  }
+
+  function editCardTitle(cardId, taskId) {
+    dispatch({...EditCardTitle(), cardId });
+  }
+
+  function saveCardTitle(cardId, newCardTitle, oldCardTitle) {
+    let title = oldCardTitle;
+    if (newCardTitle) {
+      title = newCardTitle
+    }
+    dispatch({...SaveCardTitle(), cardId, title });
+  }
+  
   return (
     <div className='container'>
       <div className='row'>
@@ -44,9 +61,14 @@ function Cards() {
                         cardId={tObj.cardId}
                         cardTitle={tObj.cardTitle}
                         tasks={tObj.tasks}
+                        isCardEdit={tObj.isEdit}
                         addTask={addTask}
                         saveTask={saveTask}
                         removeCard={removeCard}
+                        removeTask={removeTask}
+                        editTask={editTask}
+                        editCardTitle={editCardTitle}
+                        saveCardTitle={saveCardTitle}
                       />
                     ))
                   }

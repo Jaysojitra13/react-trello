@@ -3,6 +3,7 @@ export const initialState = {
     {
       cardId: 1,
       cardTitle: "Card 1",
+      isEdit: 0,
       tasks: [
         {
           id: 1,
@@ -21,6 +22,7 @@ export const initialState = {
     {
       cardId: 2,
       cardTitle: "Card 2",
+      isEdit: 0,
       tasks: [
         {
           id: 1,
@@ -36,11 +38,6 @@ export const initialState = {
         }
       ]
     },
-    // {
-    //   cardId: 3,
-    //   cardTitle: "Card 3",
-    //   tasks: []
-    // },
   ]
 }
 
@@ -79,13 +76,62 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         trello: state.trello
       }
+    
+    case 'edit_task':
+      for (let card of state.trello) {
+        if (card.cardId === action.cardId) {
+          const foundTaskId = card.tasks.findIndex(t => t.id === action.taskId);
+          console.log(foundTaskId)
+          if (foundTaskId !== -1) {
+            card.tasks[foundTaskId].isEdit = 1;
+          }
+        }
+      }
+
+      return {
+        ...state
+      }
+
+    case 'remove_task':
+      for (let card of state.trello) {
+        if (card.cardId === action.cardId) {
+          card.tasks = card.tasks.filter(t => t.id !== action.taskId)
+        }
+      }
+
+      return {
+        ...state
+      }
 
     case 'add_card':
       state.trello.push({
         cardId: state.trello.length + 1,
         cardTitle: 'New Card',
-        tasks: []
+        tasks: [],
+        isEdit: 1,
       });
+      return {
+        ...state
+      }
+
+    case 'edit_card_title':
+      for (let card of state.trello) {
+        if (card.cardId === action.cardId) {
+          card.isEdit = 1;
+        }
+      }
+      return {
+        ...state
+      }
+
+    case 'save_card_title':
+      console.log("ddd ", action)
+      for (let card of state.trello) {
+        if (card.cardId === action.cardId) {
+          card.cardTitle = action.title;
+          card.isEdit = 0;
+        }
+      }
       return {
         ...state
       }

@@ -3,16 +3,41 @@ import '../App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faCheck, faClose } from '@fortawesome/free-solid-svg-icons'
 
-function Card({ cardId, cardTitle, tasks, addTask, saveTask, removeCard }) {
+function Card({ cardId, isCardEdit, cardTitle, tasks, addTask, saveTask, removeCard, removeTask, editTask, editCardTitle, saveCardTitle }) {
+
   const [input, setInput] = useState('');
+  const [newCardTitle, setCardTitle] = useState('');
 
   const handleChange = e => {
     setInput(e.target.value);
   };
 
+  const handleCardTitleChange = e => {
+    setCardTitle(e.target.value)
+  }
+
   return (
     <div className="col-md-4 border-solid border-radius ml-10">
-      <h3>{cardTitle}</h3>
+      {
+        isCardEdit ? 
+        <div className='edit-card-title'>
+          <input
+            type="text"
+            name="card-title"
+            placeholder={cardTitle || 'Enter Card Title'}
+            onChange={handleCardTitleChange}
+          />
+
+          <button
+            className='btn btn-success saveButton'
+            onClick={() => saveCardTitle(cardId, newCardTitle, cardTitle)}
+          >
+            <FontAwesomeIcon className='saveIcon' icon={faCheck} color="white"/>
+          </button>
+        </div>
+        :
+          <h3 onClick={() => editCardTitle(cardId)}>{cardTitle}</h3>
+      }
       <div className="tasklist">
         {
           tasks.length ? 
@@ -38,12 +63,18 @@ function Card({ cardId, cardTitle, tasks, addTask, saveTask, removeCard }) {
                 // <p className="border-solid border-radius">Hello</p>
               } else {
                 return (
-                  <p 
-                    className="border-solid border-radius overflow-wrap-break"
-                    key={t.id}
-                  >
-                    {t.title}
-                  </p>
+                  <div className='taskDetail'>
+                    <p 
+                      className="taskTitle border-solid border-radius overflow-wrap-break"
+                      key={t.id}
+                      onClick={() => editTask(cardId, t.id)}
+                    >
+                      {t.title}
+                    </p>
+                    <button className='btn btn-dark deleteTaskButton' onClick={() => removeTask(cardId, t.id)}>
+                      <FontAwesomeIcon className='deleteTaskSvg' icon={faClose} color="white"/> 
+                    </button>
+                  </div>
                 )
               }
             })
