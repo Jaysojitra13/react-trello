@@ -2,39 +2,43 @@ export const initialState = {
   trello: [
     {
       cardId: 1,
-      cardTitle: "Card 1",
+      cardTitle: "Planned",
       isEdit: 0,
       tasks: [
         {
-          id: 1,
+          id: 11,
           title: "Task 1",
           color: "#9b00fa",
-          isEdit: 0
+          isEdit: 0,
+          uniqId: '1676074730655'
         },
         {
-          id: 2,
+          id: 12,
           title: "Task 2",
           color: "#9b00fa",
-          isEdit: 0
+          isEdit: 0,
+          uniqId: '1676074730656'
         }
       ]
     },
     {
       cardId: 2,
-      cardTitle: "Card 2",
+      cardTitle: "In Progress",
       isEdit: 0,
       tasks: [
         {
-          id: 1,
-          title: "Task 1",
+          id: 21,
+          title: "Task 21",
           color: "#9b00fa",
-          isEdit: 0
+          isEdit: 0,
+          uniqId: '1676074730657'
         },
         {
-          id: 2,
-          title: "Task 2",
+          id: 22,
+          title: "Task 22",
           color: "#9b00fa",
-          isEdit: 0
+          isEdit: 0,
+          uniqId: '1676074730658'
         }
       ]
     },
@@ -47,7 +51,7 @@ const rootReducer = (state = initialState, action) => {
       for (let card of state.trello) {
         if (card.cardId === action.cardId) {
           card.tasks.push({
-            id: card.tasks.length + 1,
+            id: +`${action.cardId}${card.tasks.length + 1}`,
             title: "",
             color: "#9b00fa",
             isEdit: 1
@@ -64,7 +68,6 @@ const rootReducer = (state = initialState, action) => {
         for (let card of state.trello) {
           if (card.cardId === action.cardId) {
             let taskIndex = card.tasks.findIndex(t => t.id === action.taskId);
-            console.log("taskINdex ", taskIndex, action.title);
             if (taskIndex !== -1) {
               card.tasks[taskIndex].title = action.title;
               card.tasks[taskIndex].isEdit = 0;
@@ -81,7 +84,6 @@ const rootReducer = (state = initialState, action) => {
       for (let card of state.trello) {
         if (card.cardId === action.cardId) {
           const foundTaskId = card.tasks.findIndex(t => t.id === action.taskId);
-          console.log(foundTaskId)
           if (foundTaskId !== -1) {
             card.tasks[foundTaskId].isEdit = 1;
           }
@@ -125,7 +127,6 @@ const rootReducer = (state = initialState, action) => {
       }
 
     case 'save_card_title':
-      console.log("ddd ", action)
       for (let card of state.trello) {
         if (card.cardId === action.cardId) {
           card.cardTitle = action.title;
@@ -144,11 +145,43 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state
       }
+    
+    case 'reorder_tasks':
+      
+      const sourceCardId = +action.source.droppableId;
+      const destinationCardId = +action.destination.droppableId;
 
+      const sourceTaskIndex = action.source.index;
+      const destinationTaskIndex = action.destination.index;
+
+      // Reorder within same card
+      if (sourceCardId === destinationCardId) {
+        for (let card of state.trello) {
+          if (card.cardId === sourceCardId) {
+            const [removed] = card.tasks.splice(sourceTaskIndex, 1);
+            card.tasks.splice(destinationTaskIndex, 0, removed);
+          }
+        }
+      } else {
+        // reorder in different card
+        let removed = null;
+        for (let card of state.trello) {
+          if (card.cardId === sourceCardId) {
+            [removed] = card.tasks.splice(sourceTaskIndex, 1);
+          }
+        }
+        for (let card of state.trello) {
+          if (card.cardId === destinationCardId && removed) {
+            card.tasks.splice(destinationTaskIndex, 0, removed);
+          }
+        }
+      }
+      return {
+        ...state
+      }
     default:
       return state
   }
-  // return state;
 }
 
 export default rootReducer;

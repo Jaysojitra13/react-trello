@@ -45,3 +45,9 @@ export const SaveCardTitle = () => {
     type: 'save_card_title'
   }
 }
+
+export const ReorderTasks = () => {
+  return {
+    type: 'reorder_tasks'
+  }
+}

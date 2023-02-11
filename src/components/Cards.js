@@ -2,22 +2,17 @@ import React, { useReducer } from 'react'
 import { useSelector } from 'react-redux'
 import '../App.css';
 import Card from './Card';
-import { AddTask, SaveTask, AddCard, RemoveCard, RemoveTask, EditTask, EditCardTitle, SaveCardTitle } from '../store/actions/rootAction';
+import { AddTask, AddCard, RemoveCard, RemoveTask, EditTask, EditCardTitle, SaveCardTitle, ReorderTasks } from '../store/actions/rootAction';
 import rootReducer, { initialState } from '../store/reducers/rootReducer';
+import { DragDropContext } from "react-beautiful-dnd";
 
 function Cards() {
   let trello = useSelector((state) => state.trello);
 
   const [state, dispatch] = useReducer(rootReducer, initialState);
 
-  console.log("123 ==> ", trello);
-
   function addTask(cardId) {
       dispatch({...AddTask(), cardId });
-  }
-
-  function saveTask(cardId, input, taskId) {
-    dispatch({...SaveTask(), cardId, title: input, taskId });
   }
 
   function addCard() {
@@ -48,31 +43,38 @@ function Cards() {
     dispatch({...SaveCardTitle(), cardId, title });
   }
   
+  const onDragEnd = result => {
+    if (result?.source?.droppableId !== result?.destination?.droppableId || result?.source?.index !== result?.destination?.index) {
+      dispatch({...ReorderTasks(), source: result.source, destination: result.destination });
+    }
+  };
+
   return (
     <div className='container'>
       <div className='row'>
             {
               trello?.length ? (
-                <div className="cards">
-                  {
-                    trello?.map((tObj) => (
-                      <Card 
-                        key={tObj.cardId}
-                        cardId={tObj.cardId}
-                        cardTitle={tObj.cardTitle}
-                        tasks={tObj.tasks}
-                        isCardEdit={tObj.isEdit}
-                        addTask={addTask}
-                        saveTask={saveTask}
-                        removeCard={removeCard}
-                        removeTask={removeTask}
-                        editTask={editTask}
-                        editCardTitle={editCardTitle}
-                        saveCardTitle={saveCardTitle}
-                      />
-                    ))
-                  }
-                </div>
+                <DragDropContext onDragEnd={onDragEnd}>
+                  <div className="cards">
+                    {
+                      trello?.map((tObj) => (
+                        <Card 
+                          key={tObj.cardId}
+                          cardId={tObj.cardId}
+                          cardTitle={tObj.cardTitle}
+                          tasks={tObj.tasks}
+                          isCardEdit={tObj.isEdit}
+                          addTask={addTask}
+                          removeCard={removeCard}
+                          removeTask={removeTask}
+                          editTask={editTask}
+                          editCardTitle={editCardTitle}
+                          saveCardTitle={saveCardTitle}
+                        />
+                      ))
+                    }
+                  </div>
+                </DragDropContext>
               ) : (
                 <h1>No card found</h1>
               )
