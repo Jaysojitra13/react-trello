@@ -31,7 +31,7 @@ function Card({ cardId, isCardEdit, cardTitle, tasks, addTask, removeCard, remov
   }
 
   return (
-    <div className="col-md-4 border-solid border-radius ml-10">
+    <div className="col-md-4 border-solid border-radius ml-10 card">
       {
         isCardEdit ? 
         <div className='edit-card-title'>
@@ -97,7 +97,7 @@ function Card({ cardId, isCardEdit, cardTitle, tasks, addTask, removeCard, remov
                                   {...provided.dragHandleProps}
                                 >
                                   <p 
-                                    className="taskTitle border-solid border-radius overflow-wrap-break"
+                                    className="taskTitle border-radius overflow-wrap-break"
                                     key={t.id}
                                     onClick={() => editTask(cardId, t.id)}
                                   >

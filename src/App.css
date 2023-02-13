@@ -2,23 +2,12 @@
   text-align: center;
 }
 
+body {
+  background: linear-gradient( 90deg, rgb(209 209 209 / 79%) 21%, rgb(78 78 78) 100% );
+}
+
 .title {
-  margin-bottom: 25px;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin: 25px;
   color: white;
 }
 
@@ -50,10 +39,11 @@
 .tasklist {
   width: 80%;
   margin: auto;
+  padding-top: 10px;
 }
 
 .plusButton {
-  margin: 0px 20px;
+  margin: 0px 43px;
 }
 
 .plusButton > button {
@@ -64,7 +54,17 @@
 .input-edit-add {
   margin-bottom: 10px;
   width: 100%;
-  height: 28px;
+  height: 40px;
+  background: #d4d4d4;
+  border-radius: 5px;
+  border: none;
+  box-shadow: rgb(0 0 0 / 50%) 4px 3px 9px;
+}
+
+.card {
+  box-shadow: rgb(0 0 0 / 50%) 8px 4px 10px;
+  padding: 15px 0px;
+  background-color: #ebebeb !important;
 }
 
 .saveIcon {
@@ -72,11 +72,11 @@
   width: 19px;
   position: relative;
   right: 9px;
-  bottom: 6px;
+  bottom: 1px;
 }
 
 .saveButton {
-  height: 28px;
+  height: 40px;
   width: 24px;
   margin-left: 4px;
   /* width: 36px; */
@@ -108,11 +108,20 @@
 }
 
 .taskTitle {
-  width: 100%
+  width: 100%;
+  background: #d4d4d4;
+  height: 40px;
+  padding-top: 7px;
+  box-shadow: rgb(0 0 0 / 50%) 4px 3px 9px;
+}
+
+.btn-dark {
+  background: #6f6f6f !important;
+  border: none !important;
 }
 
 .deleteTaskButton {
-  height: 28px;
+  height: 40px;
   width: 24px;
   margin-left: 5px;
 }
@@ -120,13 +129,48 @@
 .deleteTaskSvg {
   position: relative;
   right: 5px;
-  bottom: 5px;
+  bottom: 1px;
+}
+
+.btn-info {
+  background: #6f6f6f !important;
+  border: none !important;
+}
+
+.btn-danger {
+  border: none !important;
+  background: #ff8994 !important;
+}
+
+.btn-success {
+  border: none !important;
+  background: #64af8c !important;
 }
 
 .edit-card-title {
-  margin: 10px 0px;
+  margin: 10px 20px;
+  display: inline-flex;
+  /* width: 100%;
+  height: 40px;
+  background: #d4d4d4;
+  border-radius: 5px;
+  border: none;
+  box-shadow: rgb(0 0 0 / 50%) 4px 3px 9px; */
 }
+
+/* .input-edit-add {
+  margin-bottom: 10px;
+  width: 100%;
+  height: 40px;
+  background: #d4d4d4;
+  border-radius: 5px;
+  border: none;
+  box-shadow: rgb(0 0 0 / 50%) 4px 3px 9px;
+} */
 
 .edit-card-title > input {
   border: none;
+  background: #d4d4d4;
+  border-radius: 5px;
+  width: 100%;
 }
