@@ -1,7 +1,7 @@
 import React, { useState, useReducer } from 'react'
 import '../App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faCheck, faClose } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faCheck, faClose, faEdit } from '@fortawesome/free-solid-svg-icons'
 import rootReducer, { initialState } from '../store/reducers/rootReducer';
 import { SaveTask } from '../store/actions/rootAction';
 import { Droppable, Draggable } from "react-beautiful-dnd";
@@ -99,10 +99,15 @@ function Card({ cardId, isCardEdit, cardTitle, tasks, addTask, removeCard, remov
                                   <p 
                                     className="taskTitle border-radius overflow-wrap-break"
                                     key={t.id}
-                                    onClick={() => editTask(cardId, t.id)}
+                                    
                                   >
                                     {t.title}
                                   </p>
+                                  
+                                  <div className='editTaskSvg' onClick={() => editTask(cardId, t.id)}>
+                                    <FontAwesomeIcon  icon={faEdit} color="white" /> 
+                                  </div>
+                                  
                                   <button className='btn btn-dark deleteTaskButton' onClick={() => removeTask(cardId, t.id)}>
                                     <FontAwesomeIcon className='deleteTaskSvg' icon={faClose} color="white"/> 
                                   </button>
@@ -127,7 +132,7 @@ function Card({ cardId, isCardEdit, cardTitle, tasks, addTask, removeCard, remov
                   <FontAwesomeIcon icon={faPlus} color="white" /> 
                 </button>
                 <button className='btn btn-danger' onClick={() => removeCard(cardId)}>
-                  Remove Card
+                  Remove Task
                 </button>
               </div>
           </div>

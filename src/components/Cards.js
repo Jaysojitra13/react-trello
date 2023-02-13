@@ -83,7 +83,7 @@ function Cards() {
             className='btn btn-info addCardButton'
             onClick={addCard}
           >
-            Add Card
+            Add Task
           </button>
       </div>
     </div>
