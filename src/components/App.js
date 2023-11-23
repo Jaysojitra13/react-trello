@@ -1,11 +1,10 @@
-import './App.css';
-import Cards from './components/Cards';
+import TrelloList from "./TrelloList";
 
 function App() {
   return (
     <div className="App">
         <h1 className="title">React Trello</h1>
-        <Cards />
+        <TrelloList title="test"/>
     </div>
   );
 }
