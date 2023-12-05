@@ -1,22 +1,26 @@
 import React, { useReducer } from "react";
+import { useSelector } from "react-redux";
 import TrelloList from "./TrelloList";
 import listReducer, { initialState } from "../store/reducers/listReducer";
+import TrelloActionButton from "./TrelloActionButton";
 
-function App() {
-  const [state, dispatch] = useReducer(listReducer, initialState);
+const App = () => {
+  let trello = useSelector((state) => state.lists);
 
-  console.log("asdf => ", state);
   return (
     <div className="App">
-      <h1 className="title">React Trello</h1>
+      <h1 className="title" style={{ textAlign: "center " }}>
+        React Trello
+      </h1>
       <div style={styles.container}>
-        {state.map((list) => (
+        {trello.map((list) => (
           <TrelloList key={list.id} title={list.title} cards={list.cards} />
         ))}
+        <TrelloActionButton list />
       </div>
     </div>
   );
-}
+};
 
 const styles = {
   container: {
