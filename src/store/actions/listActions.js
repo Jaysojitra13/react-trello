@@ -6,3 +6,10 @@ export const addList = (title) => {
     payload: title,
   };
 };
+
+export const addCard = (listId, title) => {
+  return {
+    type: CONSTANTS.ADD_CARD,
+    payload: { title, listId },
+  };
+};

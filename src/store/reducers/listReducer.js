@@ -1,5 +1,7 @@
 import { CONSTANTS } from "../actions";
 
+let cardId = 4;
+
 export const initialState = [
   {
     id: 0,
@@ -44,6 +46,28 @@ const listReducer = (state = initialState, action) => {
         title: action.payload,
       };
       return [...state, newList];
+    case CONSTANTS.ADD_CARD:
+      const newCard = {
+        id: cardId,
+        text: action.payload.title,
+      };
+
+      cardId += 1;
+
+      const newState = state.map((list) => {
+        if (list.id == action.payload.listId) {
+          return {
+            ...list,
+            cards: [...list.cards, newCard],
+          };
+        } else {
+          return list;
+        }
+      });
+
+      return newState;
+      console.log("herer", action);
+      return state;
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import React, { useState, useReducer } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { addList } from "../store/actions";
+import { addList, addCard } from "../store/actions";
 import Icon from "@mui/material/Icon";
 import Button from "@mui/material/Button";
 import TextArea from "react-textarea-autosize";
@@ -116,7 +116,7 @@ import listReducer, { initialState } from "../store/reducers/listReducer";
 //   }
 // }
 
-const TrelloActionButton = ({ list }) => {
+const TrelloActionButton = ({ list, listId }) => {
   let dispath = useDispatch();
 
   const [stateDetails, setStateDetails] = useState({
@@ -154,7 +154,17 @@ const TrelloActionButton = ({ list }) => {
       dispath(addList(text));
     }
 
-    setStateDetails({ ...stateDetails, isFormOpen: false });
+    setStateDetails({ ...stateDetails, isFormOpen: false, text: "" });
+  };
+
+  const handleAddCard = () => {
+    const { text } = stateDetails;
+
+    if (text) {
+      dispath(addCard(listId, text));
+    }
+
+    setStateDetails({ ...stateDetails, isFormOpen: false, text: "" });
   };
 
   const renderAddButton = () => {
@@ -206,7 +216,7 @@ const TrelloActionButton = ({ list }) => {
 
         <div style={styles.formButtonGroup}>
           <Button
-            onClick={handleAddList}
+            onClick={list ? handleAddList : handleAddCard}
             variant="contained"
             style={{ color: "white", backgroundColor: "#5aac44" }}
           >
