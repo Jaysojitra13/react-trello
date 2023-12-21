@@ -13,3 +13,24 @@ export const addCard = (listId, title) => {
     payload: { title, listId },
   };
 };
+
+export const sort = (
+  droppableIdStart,
+  droppableIdEnd,
+  droppableIndexStart,
+  droppableIndexEnd,
+  draggableId,
+  type
+) => {
+  return {
+    type: CONSTANTS.DROP_HAPPEN,
+    payload: {
+      droppableIdStart,
+      droppableIdEnd,
+      droppableIndexStart,
+      droppableIndexEnd,
+      draggableId,
+      type,
+    },
+  };
+};
